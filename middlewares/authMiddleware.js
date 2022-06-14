@@ -11,7 +11,7 @@ async function signInDataVerification (req, res, next) {
         return res.status(422).send(validation.error.details);
     }
 
-    res.sendStatus(200);
+    next();
 }
 
 export { signInDataVerification };

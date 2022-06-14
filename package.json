@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/NikolasRR/project17---Linkedir---back-end#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "chalk": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
