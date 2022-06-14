@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/NikolasRR/project17---Linkedir---back-end#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "joi": "^17.6.0",
     "pq": "^0.0.3"
   }
 }
