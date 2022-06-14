@@ -8,6 +8,7 @@ async function signIn (req, res) {
 
     try {
         const result = await userRepository.getUserByEmail(email);
+
         if (!result.rows[0]) {
             return res.status(401).send('User does not exist');
         }
