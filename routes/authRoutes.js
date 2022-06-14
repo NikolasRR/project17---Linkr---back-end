@@ -1,8 +1,9 @@
 import express from "express";
+import { signInDataVerification } from "../middlewares/authMiddleware.js";
 
-const authRoute = express.Router();
+const authRouter = express.Router();
 
-authRoute.post("/sign-up");
-authRoute.post("/sign-in");
+authRouter.post("/sign-up");
+authRouter.post("/sign-in", signInDataVerification);
 
-export default authRoute;
+export default authRouter;
