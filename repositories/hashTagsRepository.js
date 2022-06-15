@@ -1,22 +1,15 @@
-import db from "../config/db";
+import db from "../config/db.js";
 
 async function getTrending() {
     return db.query(
-        `SELECT * 
+        `SELECT "content" 
         FROM hashtags 
         ORDER BY count DESC 
         LIMIT 10
         `)
 }
 
-async function getPostsByHashTag(hashTag) {
-    return db.query(
-        `SELECT * 
-        FROM "publicationHashtag"
-        JOIN publications ON "publicationHashtag"."publicationId" = publications.id
-        JOIN hashtags ON "publicationHashtag"."hashtagId" = hashtags.id
-        WHERE hashtags = ${hashTag}`);
-}
+
 
 const hashTagsRepository = {
     getTrending
