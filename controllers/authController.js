@@ -49,4 +49,9 @@ async function sessionValidation (req, res) {
     res.send(res.locals.user);
 }
 
-export { signIn, signUp, sessionValidation };
+async function logout (req, res) {
+    res.cookie('token', '', { httpOnly: true });
+    res.sendStatus(200);
+}
+
+export { signIn, signUp, sessionValidation, logout };
