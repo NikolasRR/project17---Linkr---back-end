@@ -5,6 +5,6 @@ import { publicationValidator } from "../middlewares/publicationMiddleware.js";
 
 const postRouter = express.Router();
 
-postRouter.post("/", publicationValidator, postPublication)
+postRouter.post("/timeline", publicationValidator, postPublication)
 
 export default postRouter;
