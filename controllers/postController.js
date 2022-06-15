@@ -1,15 +1,17 @@
-import db from "./../config/db.js"
+import postsRepository from "../repositories/postRepository.js"
 
 export async function postPublication(req,res){ 
     try{
-        const {user,publicationData} = res.locals    
-        const {rows} = await db.query(`SELECT * FROM users where id=$1`,[user.id])
+        const {id} = res.locals.user  
+        const {text,url} = res.locals.publicationData
+        
+        const {rows} = await postsRepository.verifyUser(id);
 
         if(rows.length===0){
             return res.status(401).send("Você não tem cadastro")
         }
 
-        await db.query(`INSERT INTO publications ("idUser",content,url) VALUES ($1,$2,$3)`,[user.id, publicationData.text, publicationData.url])
+        await postsRepository.postPublication(id, text, url);
         res.sendStatus(200)
 
     }catch(e){
