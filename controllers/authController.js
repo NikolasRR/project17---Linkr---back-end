@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import { userRepository } from "../repositories/userRepository.js";
+import authRepository from "../repositories/authRepository.js"
 
 async function signIn (req, res) {
     const { email, password } = req.body;
@@ -24,8 +25,23 @@ async function signIn (req, res) {
         return res.send(token).status(200);
 
     } catch (error) {
-        
+        console.log(error);
+        return res.status(422).send("Não foi possível logar!")
     }
 }
 
-export { signIn };
+async function signUp(req, res) {
+    const { email, password, userName, image } = req.body;
+    const encryptedPassword = bcrypt.hashSync(password, 10);
+
+    try {
+        await authRepository.insertNewUser(email, encryptedPassword, userName, image);
+        return res.status(201).send("Usuário criado com sucesso!");
+    
+    } catch (e) {
+        console.log(e);
+        return res.status(422).send("Não foi possível registrar um novo usuário!")
+    }
+}
+
+export { signIn, signUp };
