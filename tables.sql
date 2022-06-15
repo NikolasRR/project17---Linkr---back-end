@@ -11,7 +11,7 @@ CREATE TABLE "publications" (
     "id" SERIAL PRIMARY KEY,
     "idUser" INTEGER NOT NULL REFERENCES users(id),
     "content" TEXT NOT NULL,
-    "url" TEXT,
+    "url" TEXT NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
