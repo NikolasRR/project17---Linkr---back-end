@@ -5,6 +5,7 @@ import chalk from "chalk";
 import cookieParser from "cookie-parser";
 
 import authRouter from "./routes/authRoutes.js";
+import hashTagsRouter from "./routes/hashTagsRouter.js";
 
 dotenv.config();
 
