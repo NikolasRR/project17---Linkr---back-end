@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 async function tokenValidation (req, res, next) {
-    const token = req.headers.cookie;
+    const token = req.cookies.token;
     if (!token) {
         return res.sendStatus(422);
     }
