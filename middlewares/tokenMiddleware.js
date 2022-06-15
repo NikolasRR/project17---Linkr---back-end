@@ -9,6 +9,7 @@ async function tokenValidation (req, res, next) {
         const user = jwt.verify(token, process.env.JWT_SECRET);
         res.locals.user = user;
     } catch (error) {
+        console.log(error);
         return res.sendStatus(400);
     }
 
