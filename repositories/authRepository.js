@@ -1,10 +1,10 @@
 import db from "../config/db.js";
 
-async function insertNewUser(email, password, userName, image) {
+async function insertNewUser(email, password, name, image) {
     return db.query(`
-        INSERT INTO users (email, password, "userName", image)
+        INSERT INTO users (email, password, name, image)
         VALUES ($1, $2, $3, $4)`,
-        [email, password, userName, image]);
+        [email, password, name, image]);
 }
 
 async function getUserByEmail(email) {
@@ -14,11 +14,11 @@ async function getUserByEmail(email) {
         [email]);
 }
 
-async function getUserByName(userName) {
+async function getUserByName(name) {
     return db.query(`
         SELECT * FROM users
-        WHERE "userName" = $1`,
-        [userName]);
+        WHERE "name" = $1`,
+        [name]);
 }
 
 const authRepository = {
