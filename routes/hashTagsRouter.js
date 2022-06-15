@@ -1,7 +1,7 @@
 import {Router} from 'express';
 
 import{getTrending} from './../controllers/hashTagsController.js';
-import {tokenValidation} from './../middlewares/tokenMiddleware.js';
+import tokenValidation from './../middlewares/tokenMiddleware.js';
 
 const hashTagsRouter = Router();
 
