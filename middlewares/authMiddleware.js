@@ -1,5 +1,21 @@
+import joi from "joi";
+
 import signUpSchema from "../schemas/authSchema.js";
 import authRepository from "../repositories/authRepository.js"
+
+async function signInDataVerification (req, res, next) {
+    const schema = joi.object({
+        email: joi.string().email().required(),
+        password: joi.string().required()
+    });
+
+    const validation = schema.validate(req.body, { abortEarly: false });
+    if (validation.error) {
+        return res.status(422).send(validation.error.details);
+    }
+
+    next();
+}
 
 async function validateSignUp(req, res, next) {
     const { email, password, userName, image } = req.body;
@@ -30,4 +46,4 @@ async function validateSignUp(req, res, next) {
     }
 }
 
-export default validateSignUp;
+export { signInDataVerification, validateSignUp };
