@@ -7,7 +7,8 @@ export  async function publicationValidator(req,res,next){
         return res.status(422).send(validation.error.details);
     } 
 
-    res.locals.publicationData = req.body
-
+    res.locals.text = req.body.text;
+    res.locals.url = req.body.url;
+    
     next();
 }
