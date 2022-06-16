@@ -5,7 +5,6 @@ import authRepository from "../repositories/authRepository.js"
 
 async function signIn (req, res) {
     const { email, password } = req.body;
-    console.log(req.cookies);
 
     try {
         const result = await authRepository.getUserByEmail(email);
@@ -46,4 +45,13 @@ async function signUp(req, res) {
     }
 }
 
-export { signIn, signUp };
+async function sessionValidation (req, res) {
+    res.send(res.locals.user);
+}
+
+async function logout (req, res) {
+    res.cookie('token', '', { httpOnly: true });
+    res.sendStatus(200);
+}
+
+export { signIn, signUp, sessionValidation, logout };
