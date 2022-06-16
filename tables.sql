@@ -1,6 +1,6 @@
 CREATE TABLE "users" (
     "id" SERIAL PRIMARY KEY,
-    "name" TEXT NOT NULL UNIQUE,
+    "userName" TEXT NOT NULL UNIQUE,
     "email" TEXT NOT NULL UNIQUE,
     "password" TEXT NOT NULL,
     "image" TEXT NOT NULL,
@@ -15,6 +15,15 @@ CREATE TABLE "publications" (
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE "links" (
+    "id" SERIAL PRIMARY KEY,
+    "title" TEXT NOT NULL,
+    "description" TEXT NOT NULL, 
+    "image" TEXT NOT NULL,
+    "link" TEXT NOT NULL,
+    "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
 CREATE TABLE "hashtags" (
     "id" SERIAL PRIMARY KEY,
     "count" INTEGER NOT NULL DEFAULT 0,
@@ -26,6 +35,7 @@ CREATE TABLE "publicationHashtag" (
     "id" SERIAL PRIMARY KEY,
     "publicationId" INTEGER NOT NULL REFERENCES publications(id),
     "hashtagId" INTEGER NOT NULL REFERENCES hashtags(id),
+    "linkId" INTEGER NOT NULL REFERENCES links(id),
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
