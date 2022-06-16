@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 async function tokenValidation (req, res, next) {
     const token = req.cookies.token;
     if (!token) {
-        return res.sendStatus(422);
+        return res.send("token não encontrado").status(422);
     }
     try {
         const user = jwt.verify(token, process.env.JWT_SECRET);

@@ -20,7 +20,7 @@ async function signIn (req, res) {
 
         delete result.rows[0].password;
 
-        const config = { expiresIn: 60*60*24*3 };
+        const config = { expiresIn: 60*60*12 };
         const token = jwt.sign(result.rows[0], process.env.JWT_SECRET, config);
 
         res.cookie('token', token, { httpOnly: true });

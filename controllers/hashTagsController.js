@@ -7,6 +7,7 @@ export async function getTrending(req, res) {
     }catch(err){
         res.status(500).send(err);
     }
+    
 }
 
 export async function getPostsByHashTag(req, res) {
