@@ -15,7 +15,8 @@ app.use(cookieParser());
 app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
 app.use(json());
 
-app.use(authRouter)
+app.use(authRouter);
+app.use(hashTagsRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

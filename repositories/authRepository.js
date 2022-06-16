@@ -2,9 +2,9 @@ import db from "../config/db.js";
 
 async function insertNewUser(email, password, name, image) {
     return db.query(`
-        INSERT INTO users (email, password, name, image)
+        INSERT INTO users (email, password, "userName", image)
         VALUES ($1, $2, $3, $4)`,
-        [email, password, name, image]);
+        [email, password, userName, image]);
 }
 
 async function getUserByEmail(email) {
