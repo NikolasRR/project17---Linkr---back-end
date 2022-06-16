@@ -32,6 +32,7 @@
     "nodemon": "^2.0.16",
     "pg": "^8.7.3",
     "postgres-array": "^3.0.1",
+    "url-metadata": "^2.5.0",
     "uuid": "^8.3.2"
   }
 }

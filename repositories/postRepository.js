@@ -1,29 +1,37 @@
 import db from "../config/db.js";
 
 async function verifyUser(id){
-    return db.query(
-        `SELECT * FROM users where id=$1`,[id])
+    return db.query(`SELECT * FROM users where id=$1`,[id])
 }
 
-async function postPublication(id,text,url){
-    return await db.query(`INSERT INTO publications ("idUser",content,url) VALUES ($1,$2,$3)`,[id,text,url])
+async function postLink(title,description,image,link){
+    return await db.query(`
+    INSERT INTO links (title,description,image,link) VALUES ($1,$2,$3,$4) RETURNING id`,[title,description,image,link])
+}
+
+async function postPublication(id,text,url,linkId){
+    return await db.query(`
+    INSERT INTO publications ("idUser",content,url,"linkId") VALUES ($1,$2,$3,$4)`,[id,text,url,linkId])
 }
 
 async function getPublications(){
-    return await db.query(`SELECT publications.content, publications.url, COALESCE(SUM(likes."publicationId"),0) as "totalLikes", users."userName", users.image 
+    return await db.query(`SELECT publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image, links.* 
     FROM publications
     LEFT JOIN likes
     ON publications.id = likes."publicationId"
     JOIN users 
     ON publications."idUser" = users.id
-    GROUP BY publications.id,users."userName", users.image,likes."publicationId"
+    JOIN links
+    ON links.id = publications."linkId"
+    GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id
     ORDER BY publications."createdAt" DESC LIMIT 20`)
 }
 
 const postsRepository = {
     verifyUser,
+    postLink,
     postPublication,
-    getPublications
+    getPublications    
 }
 
 export default postsRepository;
