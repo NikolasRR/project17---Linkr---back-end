@@ -39,7 +39,7 @@ export async function getPublications(req,res){
     try{
         const {rows} = await postsRepository.getPublications();
         if(rows.length===0){
-            return res.status(404).send("Ainda não há publicações")
+            return res.status(404).send(rows)
         }
 
         res.status(200).send(rows)
