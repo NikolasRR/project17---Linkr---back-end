@@ -22,9 +22,11 @@ async function signIn (req, res) {
 
         const config = { expiresIn: 60*60*12 };
         const token = jwt.sign(result.rows[0], process.env.JWT_SECRET, config);
+        console.log(token)
         return res.send(token).status(200);
 
     } catch (error) {
+        console.log("entrou")
         console.log(error);
         return res.status(422).send("Não foi possível logar!")
     }
