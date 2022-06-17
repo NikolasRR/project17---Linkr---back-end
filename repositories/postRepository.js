@@ -11,7 +11,7 @@ async function postLink(title,description,image,link){
 
 async function postPublication(id,text,url,linkId){
     return await db.query(`
-    INSERT INTO publications ("idUser",content,url,"linkId") VALUES ($1,$2,$3,$4)`,[id,text,url,linkId])
+    INSERT INTO publications ("idUser",content,url,"linkId") VALUES ($1,$2,$3,$4) RETURNING id`,[id,text,url,linkId])
 }
 
 async function getPublications(){
