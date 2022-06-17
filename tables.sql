@@ -45,3 +45,15 @@ CREATE TABLE "likes" (
     "userId" INTEGER NOT NULL REFERENCES users(id),
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+ALTER TABLE publications
+  ADD CONSTRAINT fk_links_id
+  FOREIGN KEY ("linkId") 
+  REFERENCES links(id) 
+  ON DELETE CASCADE;
+
+ALTER TABLE likes
+  ADD CONSTRAINT fk_publication_id 
+  FOREIGN KEY ("publicationId") 
+  REFERENCES publications(id) 
+  ON DELETE CASCADE;
