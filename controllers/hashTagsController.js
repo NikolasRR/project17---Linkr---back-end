@@ -11,10 +11,18 @@ export async function getTrending(req, res) {
 }
 
 export async function getPostsByHashTag(req, res) {
+    const {hashtag} = req.params;
+    console.log("controller");
     try{
-        const result = await hashTagsRepository.getPostsByHashTag(req.params.hashTag);
-        res.status(200).json(result.rows);
+        const {rows} = await hashTagsRepository.getPublicationsByHashTag(req.params.hashtag);
+        if(rows.length===0){
+            return res.status(404).send(rows)
+        }
+
+        res.status(200).send(rows)
+
     }catch(err){
+        console.log("erro: ", err);
         res.sendStatus(500).send(err);
     }
 }
