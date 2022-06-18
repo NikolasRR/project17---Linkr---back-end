@@ -45,13 +45,4 @@ async function signUp(req, res) {
     }
 }
 
-async function sessionValidation (req, res) {
-    res.send(res.locals.user);
-}
-
-async function logout (req, res) {
-    res.cookie('token', '', { httpOnly: true });
-    res.sendStatus(200);
-}
-
-export { signIn, signUp, sessionValidation, logout };
+export { signIn, signUp };
