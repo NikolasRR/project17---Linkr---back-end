@@ -1,14 +1,13 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-import { userRepository } from "../repositories/userRepository.js";
 import authRepository from "../repositories/authRepository.js"
 
 async function signIn (req, res) {
     const { email, password } = req.body;
 
     try {
-        const result = await userRepository.getUserByEmail(email);
+        const result = await authRepository.getUserByEmail(email);
 
         if (!result.rows[0]) {
             return res.status(401).send('User does not exist');
@@ -22,7 +21,7 @@ async function signIn (req, res) {
 
         const config = { expiresIn: 60*60*12 };
         const token = jwt.sign(result.rows[0], process.env.JWT_SECRET, config);
-        console.log(token)
+        res.cookie('token', token, { httpOnly: true });
         return res.send(token).status(200);
 
     } catch (error) {
@@ -46,4 +45,13 @@ async function signUp(req, res) {
     }
 }
 
-export { signIn, signUp };
+async function sessionValidation (req, res) {
+    res.send(res.locals.user);
+}
+
+async function logout (req, res) {
+    res.cookie('token', '', { httpOnly: true });
+    res.sendStatus(200);
+}
+
+export { signIn, signUp, sessionValidation, logout };

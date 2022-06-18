@@ -14,11 +14,11 @@ async function getUserByEmail(email) {
         [email]);
 }
 
-async function getUserByName(userName) {
+async function getUserByName(name) {
     return db.query(`
         SELECT * FROM users
         WHERE "userName" = $1`,
-        [userName]);
+        [name]);
 }
 
 const authRepository = {
