@@ -28,11 +28,31 @@ async function getPublications(){
     `)
 }
 
+async function getHashtag(hashtag){
+    return await db.query(`SELECT * FROM hashtags where content=$1`,[hashtag])
+}
+
+async function postHashtag(hashtag){
+    return await db.query(`INSERT INTO hashtags (content) VALUES ($1) RETURNING id`,[hashtag])
+}
+
+async function postPublicationHashtag(postId,hashtagId){
+    return await db.query(`INSERT INTO "publicationHashtag" ("publicationId","hashtagId") VALUES ($1,$2)`,[postId,hashtagId])
+}
+
+async function addCountHashtag(hashtagId){
+    return await db.query(`UPDATE hashtags SET count=count+1 WHERE id=$1`,[hashtagId])
+}
+
 const postsRepository = {
     verifyUser,
     postLink,
     postPublication,
-    getPublications    
+    getPublications,
+    getHashtag,
+    postHashtag,
+    postPublicationHashtag,
+    addCountHashtag
 }
 
 export default postsRepository;

@@ -29,8 +29,22 @@ export async function postPublication(req,res){
         
         const {rows:data} = await postsRepository.postPublication(id,text,url,linkId);
         const postId = data[0].id;
-
-
+        console.log(postId, hashtags);
+        if(hashtags.length>0){
+            hashtags.forEach(async hashtag => {
+                const {rows:result} = await postsRepository.getHashtag(hashtag);
+                if(result.length===0){
+                    const {rows:data} = await postsRepository.postHashtag(hashtag);
+                    const hashtagId = data[0].id;
+                    await postsRepository.postPublicationHashtag(postId,hashtagId);
+                }else{
+                    const hashtagId = result[0].id;
+                    await postsRepository.postPublicationHashtag(postId,hashtagId);
+                    await postsRepository.addCountHashtag(hashtagId);
+                }
+            }
+            )
+        }
         res.sendStatus(200)
 
     }catch(e){

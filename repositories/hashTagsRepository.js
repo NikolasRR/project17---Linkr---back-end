@@ -10,7 +10,6 @@ async function getTrending() {
 }
 
 async function getPublicationsByHashTag(hashTag) {
-    console.log(hashTag);
     return db.query(
         `SELECT publications.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
             users."userName", users.image as profile, links.* 
