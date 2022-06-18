@@ -15,7 +15,7 @@ async function postPublication(id,text,url,linkId){
 }
 
 async function getPublications(){
-    return await db.query(`SELECT publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
+    return await db.query(`SELECT publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users.id as "userId", users."userName", users.image as profile, links.* 
     FROM publications
     LEFT JOIN likes
     ON publications.id = likes."publicationId"
@@ -23,7 +23,7 @@ async function getPublications(){
     ON publications."idUser" = users.id
     JOIN links
     ON links.id = publications."linkId"
-    GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id
+    GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id,users.id
     ORDER BY publications."createdAt" DESC LIMIT 20
     `)
 }

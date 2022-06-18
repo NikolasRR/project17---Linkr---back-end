@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRoutes.js";
 import postRouter from "./routes/postRouter.js"
 import hashTagsRouter from "./routes/hashTagsRouter.js";
+import userRouter from "./routes/userRouter.js"
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(json());
 app.use(hashTagsRouter);
 app.use(authRouter)
 app.use(postRouter)
+app.use(userRouter)
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
