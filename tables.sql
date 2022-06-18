@@ -57,3 +57,9 @@ ALTER TABLE likes
   FOREIGN KEY ("publicationId") 
   REFERENCES publications(id) 
   ON DELETE CASCADE;
+
+ALTER TABLE "publicationHashtag"
+  ADD CONSTRAINT fk_publication_id 
+  FOREIGN KEY ("publicationId") 
+  REFERENCES publications(id) 
+  ON DELETE CASCADE
