@@ -15,7 +15,8 @@ async function postPublication(id,text,url,linkId){
 }
 
 async function getPublications(){
-    return await db.query(`SELECT publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users.id as "userId", users."userName", users.image as profile, links.* 
+    return await db.query(`SELECT users.id as as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
+
     FROM publications
     LEFT JOIN likes
     ON publications.id = likes."publicationId"
@@ -28,11 +29,25 @@ async function getPublications(){
     `)
 }
 
+async function getPublication (postId, userId) {
+    return db.query(`
+        SELECT * 
+        FROM publications
+        WHERE id = $1 AND "idUser" = $2
+    `, [postId, userId]);
+}
+
+async function deletePost (linkId) {
+    return db.query(`DELETE FROM links WHERE id = $1 RETURNING *;`, [linkId]);
+}
+
 const postsRepository = {
     verifyUser,
     postLink,
     postPublication,
-    getPublications    
+    getPublications,
+    getPublication,
+    deletePost
 }
 
 export default postsRepository;

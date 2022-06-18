@@ -25,11 +25,10 @@ export async function postPublication(req,res){
         console.log(metadatas)
 
         const {rows:result} = await postsRepository.postLink(title,description,image,url) 
-        const linkId = result[0].id     
+        const linkId = result[0].id    
         
         const {rows:data} = await postsRepository.postPublication(id,text,url,linkId);
         const postId = data[0].id;
-
 
         res.sendStatus(200)
 
@@ -52,5 +51,17 @@ export async function getPublications(req,res){
     }catch(e){
         console.error(e)
         res.sendStatus(500)
+    }
+}
+
+export async function deletePost(req, res) {
+    const { linkId } = req.query;
+
+    try {
+        await postsRepository.deletePost(linkId);
+        res.sendStatus(204);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
     }
 }
