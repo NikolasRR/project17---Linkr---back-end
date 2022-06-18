@@ -21,11 +21,11 @@ async function signIn (req, res) {
 
         const config = { expiresIn: 60*60*12 };
         const token = jwt.sign(result.rows[0], process.env.JWT_SECRET, config);
-
         res.cookie('token', token, { httpOnly: true });
         return res.send(result.rows[0]).status(200);
 
     } catch (error) {
+        console.log("entrou")
         console.log(error);
         return res.status(422).send("Não foi possível logar!")
     }
@@ -45,13 +45,4 @@ async function signUp(req, res) {
     }
 }
 
-async function sessionValidation (req, res) {
-    res.send(res.locals.user);
-}
-
-async function logout (req, res) {
-    res.cookie('token', '', { httpOnly: true });
-    res.sendStatus(200);
-}
-
-export { signIn, signUp, sessionValidation, logout };
+export { signIn, signUp };

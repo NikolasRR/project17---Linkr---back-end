@@ -7,6 +7,8 @@ export async function postPublication(req, res) {
         const { id } = res.locals.user
         const { text, url } = res.locals
 
+        const hashtags = findHashtags(text);
+
         const { rows } = await postsRepository.verifyUser(id);
         if (rows.length === 0) {
             return res.status(401).send("Você não tem cadastro")
@@ -25,7 +27,8 @@ export async function postPublication(req, res) {
         const { rows: result } = await postsRepository.postLink(title, description, image, url)
         const linkId = result[0].id
 
-        await postsRepository.postPublication(id, text, url, linkId);
+        const { rows: data } = await postsRepository.postPublication(id, text, url, linkId);
+        const postId = data[0].id;
 
         res.sendStatus(200)
 
@@ -37,11 +40,8 @@ export async function postPublication(req, res) {
 
 export async function getPublications(req, res) {
 
-    try {
-        const { rows } = await postsRepository.getPublications();
-        if (rows.length === 0) {
-            return res.status(404).send("Ainda não há publicações")
-        }
+    try{
+        const {rows} = await postsRepository.getPublications();
 
         res.status(200).send(rows)
 
