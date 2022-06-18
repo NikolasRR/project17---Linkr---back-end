@@ -1,50 +1,50 @@
 import postsRepository from "../repositories/postRepository.js"
 import urlMetadata from "url-metadata"
 
-export async function postPublication(req, res) {
-    try {
-        const { id } = res.locals.user
-        const { text, url } = res.locals
+export async function postPublication(req,res){ 
+    try{
+        const {id} = res.locals.user  
+        const {text,url} = res.locals       
 
-        const { rows } = await postsRepository.verifyUser(id);
-        if (rows.length === 0) {
+        const {rows} = await postsRepository.verifyUser(id);
+        if(rows.length===0){
             return res.status(401).send("Você não tem cadastro")
         }
 
-        const { title, description, image } = await urlMetadata(url)
+        const {title,description,image}= await urlMetadata(url)
 
         const metadatas = {
             title,
             description,
-            image
+            image           
         };
 
         console.log(metadatas)
 
-        const { rows: result } = await postsRepository.postLink(title, description, image, url)
-        const linkId = result[0].id
+        const {rows:result} = await postsRepository.postLink(title,description,image,url) 
+        const linkId = result[0].id     
 
-        await postsRepository.postPublication(id, text, url, linkId);
+        await postsRepository.postPublication(id,text,url,linkId);
 
         res.sendStatus(200)
 
-    } catch (e) {
+    }catch(e){
         console.error(e)
         res.sendStatus(500)
     }
 }
 
-export async function getPublications(req, res) {
+export async function getPublications(req,res){
 
-    try {
-        const { rows } = await postsRepository.getPublications();
-        if (rows.length === 0) {
+    try{
+        const {rows} = await postsRepository.getPublications();
+        if(rows.length===0){
             return res.status(404).send("Ainda não há publicações")
         }
 
         res.status(200).send(rows)
 
-    } catch (e) {
+    }catch(e){
         console.error(e)
         res.sendStatus(500)
     }
