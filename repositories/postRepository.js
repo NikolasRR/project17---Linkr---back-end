@@ -29,7 +29,6 @@ async function getPublications() {
     `)
 }
 
-<<<<<<< HEAD
 async function getPublication(postId, userId) {
     return db.query(`
         SELECT * 
@@ -40,7 +39,7 @@ async function getPublication(postId, userId) {
 
 async function deletePost(linkId) {
     return db.query(`DELETE FROM links WHERE id = $1 RETURNING *;`, [linkId]);
-=======
+}
 async function getHashtag(hashtag){
     return await db.query(`SELECT * FROM hashtags where content=$1`,[hashtag])
 }
@@ -55,7 +54,6 @@ async function postPublicationHashtag(postId,hashtagId){
 
 async function addCountHashtag(hashtagId){
     return await db.query(`UPDATE hashtags SET count=count+1 WHERE id=$1`,[hashtagId])
->>>>>>> feature/pageHashtag
 }
 
 const postsRepository = {
@@ -63,15 +61,12 @@ const postsRepository = {
     postLink,
     postPublication,
     getPublications,
-<<<<<<< HEAD
     getPublication,
-    deletePost
-=======
+    deletePost,
     getHashtag,
     postHashtag,
     postPublicationHashtag,
     addCountHashtag
->>>>>>> feature/pageHashtag
 }
 
 export default postsRepository;
