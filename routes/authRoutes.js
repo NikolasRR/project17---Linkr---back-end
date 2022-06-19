@@ -1,6 +1,6 @@
 import express from "express";
 
-import { logout, sessionValidation, signIn, signUp } from "../controllers/authController.js";
+import { signIn, signUp, sessionValidation, logout } from "../controllers/authController.js";
 import { signInDataVerification, validateSignUp } from "../middlewares/authMiddleware.js";
 import tokenValidation from "../middlewares/tokenMiddleware.js";
 

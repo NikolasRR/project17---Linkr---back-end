@@ -1,7 +1,7 @@
 import db from "../config/db.js";
 
 async function getUserPublications(id){
-    return await db.query(`SELECT publications.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
+    return await db.query(`SELECT publications.id as "publicationId", links.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
     users."userName", users.image as profile, links.* 
     FROM publications
     LEFT JOIN likes
