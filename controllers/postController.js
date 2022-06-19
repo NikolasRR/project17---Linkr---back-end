@@ -62,3 +62,15 @@ export async function deletePost(req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function editPost (req, res) {
+    const { text } = req.body;
+    const { postId } = req.params;
+
+    try {
+        await postsRepository.editPost(postId, text);
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}

@@ -40,13 +40,22 @@ async function deletePost (linkId) {
     return db.query(`DELETE FROM links WHERE id = $1 RETURNING *;`, [linkId]);
 }
 
+async function editPost (postId, content) {
+    return db.query(`
+        UPDATE publications
+        SET content = $2
+        WHERE id = $1
+    `, postId, content)
+}
+
 const postsRepository = {
     verifyUser,
     postLink,
     postPublication,
     getPublications,
     getPublication,
-    deletePost
+    deletePost,
+    editPost
 }
 
 export default postsRepository;
