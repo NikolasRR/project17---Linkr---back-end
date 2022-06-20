@@ -11,8 +11,8 @@ async function getTrending() {
 
 async function getPublicationsByHashTag(hashTag) {
     return db.query(
-        `SELECT publications.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
-            users."userName", users.image as profile, links.* 
+        `SELECT publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
+            users.id as "userId", users."userName", users.image as profile, links.* 
         FROM publications
         LEFT JOIN likes
         ON publications.id = likes."publicationId"
@@ -25,7 +25,7 @@ async function getPublicationsByHashTag(hashTag) {
         JOIN hashtags as hash
         ON hash.id = hash_link."hashtagId"
         WHERE hash.content = $1
-        GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id
+        GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id, users.id
         ORDER BY publications."createdAt" DESC LIMIT 20`, [hashTag]
     )
 }
