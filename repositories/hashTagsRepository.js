@@ -1,17 +1,19 @@
 import db from "../config/db.js";
 
 async function getTrending() {
-    return db.query(
-        `SELECT "content" 
-        FROM hashtags 
-        ORDER BY count DESC 
+    return db.query(`
+        SELECT COUNT(ph), h.content
+        FROM hashtags h
+        JOIN "publicationHashtag" ph ON h.id = ph."hashtagId"
+        GROUP BY h.content
+        ORDER BY count DESC
         LIMIT 10
         `)
 }
 
 async function getPublicationsByHashTag(hashTag) {
     return db.query(
-        `SELECT publications.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
+        `SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
             users."userName", users.image as profile, links.* 
         FROM publications
         LEFT JOIN likes
@@ -25,13 +27,14 @@ async function getPublicationsByHashTag(hashTag) {
         JOIN hashtags as hash
         ON hash.id = hash_link."hashtagId"
         WHERE hash.content = $1
-        GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id
+        GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id, users.id
         ORDER BY publications."createdAt" DESC LIMIT 20`, [hashTag]
     )
 }
+
 const hashTagsRepository = {
     getTrending,
-    getPublicationsByHashTag
+    getPublicationsByHashTag,
 }
 
 export default hashTagsRepository;

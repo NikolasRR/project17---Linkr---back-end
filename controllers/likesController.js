@@ -20,11 +20,7 @@ async function deslikePost(req, res) {
     const { user } = res.locals
     const { id } = req.params;
 
-    console.log("post", id)
-
     const usersId = user.id;
-
-    console.log("user", usersId)
 
     try {
         await likesRepository.deslikePost(usersId, id);
@@ -41,11 +37,9 @@ async function countLikes(req, res) {
 
     try {
         const likesInfo = await likesRepository.countLikes(id);
-        console.log("iha", likesInfo.rows)
         if (likesInfo.rows.length == 0){
             return res.status(200).send(`${likesInfo.rows.length}`)
         } else {
-            console.log(likesInfo.rows[0].count)
             return res.status(200).send(likesInfo.rows[0].count);
         }
     
