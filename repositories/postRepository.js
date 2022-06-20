@@ -57,6 +57,23 @@ async function addCountHashtag(hashtagId){
     return await db.query(`UPDATE hashtags SET count=count+1 WHERE id=$1`,[hashtagId])
 }
 
+async function editPostContent (postId, content) {
+    return db.query(`
+        UPDATE publications
+        SET content = $1
+        WHERE id = $2
+        RETURNING *
+    `, [content, postId])
+}
+
+async function deleteExistingPostHashtags (postId) {
+    console.log(postId);
+    return db.query(`
+        DELETE FROM "publicationHashtag"
+        WHERE "publicationId" = $1
+    `, [postId])
+}
+
 const postsRepository = {
     verifyUser,
     postLink,
@@ -64,6 +81,8 @@ const postsRepository = {
     getPublications,
     getPublication,
     deletePost,
+    editPostContent,
+    deleteExistingPostHashtags,
     getHashtag,
     postHashtag,
     postPublicationHashtag,
