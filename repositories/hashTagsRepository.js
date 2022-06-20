@@ -12,9 +12,8 @@ async function getTrending() {
 }
 
 async function getPublicationsByHashTag(hashTag) {
-    return db.query(
-        `SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
-            users."userName", users.image as profile, links.* 
+    return db.query(`
+        SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
         FROM publications
         LEFT JOIN likes
         ON publications.id = likes."publicationId"

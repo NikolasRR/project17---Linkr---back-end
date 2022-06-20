@@ -49,6 +49,7 @@ async function postHashtag(hashtag){
 }
 
 async function postPublicationHashtag(postId,hashtagId){
+    console.log(postId,hashtagId);
     return await db.query(`INSERT INTO "publicationHashtag" ("publicationId","hashtagId") VALUES ($1,$2)`,[postId,hashtagId])
 }
 
