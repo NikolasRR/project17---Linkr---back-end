@@ -9,12 +9,13 @@ async function tokenValidation (req, res, next) {
     try {
         const user = jwt.verify(token, process.env.JWT_SECRET);
         res.locals.user = user;
+        
+        next();
     } catch (error) {
         console.log(error)
         return res.sendStatus(400);        
     }
 
-    next();
 }  
 
 export default tokenValidation;

@@ -15,11 +15,8 @@ export async function getPostsByHashTag(req, res) {
 
     try {
         const { rows } = await hashTagsRepository.getPublicationsByHashTag(req.params.hashtag);
-        if (rows.length === 0) {
-            return res.status(404).send(rows)
-        }
 
-        res.status(200).send(rows)
+        res.status(200).send(rows);
 
     } catch (err) {
         console.log("erro: ", err);

@@ -109,18 +109,3 @@ export async function editPost(req, res) {
         res.sendStatus(500);
     }
 }
-
-export async function postEdit (req, res) {
-    console.log('CHEGOU AQUI');
-    const { text } = req.body;
-    const postId = parseInt(req.query.postId);
-    const hashtags = findHashtags(text);
-    try {
-        const result = await postsRepository.editPostContent(postId, text);
-        console.log(result);
-        res.send(result).status(200);
-
-    } catch (error) {
-        console.log(error);
-    }
-}
