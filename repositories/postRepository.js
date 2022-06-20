@@ -59,18 +59,18 @@ async function addCountHashtag(hashtagId){
 async function editPostContent (postId, content) {
     return db.query(`
         UPDATE publications
-        SET content = $2
-        WHERE id = $1
-    `, postId, content)
+        SET content = $1
+        WHERE id = $2
+        RETURNING *
+    `, [content, postId])
 }
 
 async function deleteExistingPostHashtags (postId) {
+    console.log(postId);
     return db.query(`
-        DELETE FROM 
-        "publicationHashtag"
+        DELETE FROM "publicationHashtag"
         WHERE "publicationId" = $1
-        RETURNING *
-    `, [postId]);
+    `, [postId])
 }
 
 const postsRepository = {

@@ -8,6 +8,6 @@ const postRouter = express.Router();
 postRouter.post("/timeline",tokenValidation, publicationValidator, postPublication);
 postRouter.get("/timeline",tokenValidation, getPublications);
 postRouter.delete("/post", tokenValidation, postDeletionValidator, deletePost);
-postRouter.put("/post/:postId", tokenValidation, editPost);
+postRouter.put("/post", tokenValidation, editPost);
 
 export default postRouter;

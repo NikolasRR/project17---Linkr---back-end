@@ -79,11 +79,12 @@ export async function deletePost(req, res) {
 
 export async function editPost(req, res) {
     const { text } = req.body;
-    const { postId } = req.params;
+    const postId = parseInt(req.query.postId);
     const hashtags = findHashtags(text);
 
     try {
         await postsRepository.editPostContent(postId, text);
+        console.log('teste');
         await postsRepository.deleteExistingPostHashtags(postId);
 
         if (hashtags.length > 0) {
@@ -97,14 +98,29 @@ export async function editPost(req, res) {
                 } else {
                     const hashtagId = result[0].id;
                     await postsRepository.postPublicationHashtag(postId, hashtagId);
-                    await postsRepository.addCountHashtag(hashtagId);
                 }
             })
         }
-        res.sendStatus(200);
+        console.log('algo');
+        return res.sendStatus(200);
 
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
+    }
+}
+
+export async function postEdit (req, res) {
+    console.log('CHEGOU AQUI');
+    const { text } = req.body;
+    const postId = parseInt(req.query.postId);
+    const hashtags = findHashtags(text);
+    try {
+        const result = await postsRepository.editPostContent(postId, text);
+        console.log(result);
+        res.send(result).status(200);
+
+    } catch (error) {
+        console.log(error);
     }
 }
