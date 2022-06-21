@@ -16,7 +16,7 @@ async function postPublication(id, text, url, linkId) {
 
 async function getPublications() {
     return await db.query(`
-        SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
+        SELECT users.id as "userId", publications."createdAt", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
         FROM publications
         LEFT JOIN likes
         ON publications.id = likes."publicationId"
@@ -67,11 +67,18 @@ async function editPostContent (postId, content) {
 }
 
 async function deleteExistingPostHashtags (postId) {
-    console.log(postId);
     return db.query(`
         DELETE FROM "publicationHashtag"
         WHERE "publicationId" = $1
     `, [postId])
+}
+
+async function newPosts (lastPostTimestamp) {
+    return db.query(`
+        SELECT * FROM publications
+        WHERE "createdAt" > $1
+        ORDER BY "createdAt" DESC
+    `, [lastPostTimestamp])
 }
 
 const postsRepository = {
@@ -86,7 +93,8 @@ const postsRepository = {
     getHashtag,
     postHashtag,
     postPublicationHashtag,
-    addCountHashtag
+    addCountHashtag,
+    newPosts
 }
 
 export default postsRepository;
