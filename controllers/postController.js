@@ -57,7 +57,6 @@ export async function getPublications(req, res) {
 
     try {
         const { rows } = await postsRepository.getPublications();
-
         res.status(200).send(rows)
 
     } catch (e) {
@@ -112,16 +111,15 @@ export async function editPost(req, res) {
 }
 
 export async function newPostsVerifier (req, res) {
-
+    const lastPostTimestamp = dayjs(req.body.createdAt).format('YYYY-MM-DD HH:mm:ss');
     try {
-        const { rows } = await postsRepository.newPosts(req.body.createdAt);
+        const { rows } = await postsRepository.newPosts(`${lastPostTimestamp}.999999`);
         
         if (rows.length > 0) {
-            console.log(rows);
             return res.send({ amount: rows.length }).status(200);
         }
 
-        res.sendStatus(404);
+        res.sendStatus(204);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
