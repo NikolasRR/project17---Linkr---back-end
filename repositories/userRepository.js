@@ -1,7 +1,8 @@
 import db from "../config/db.js";
 
-async function getUserPublications(id){
-    return await db.query(`SELECT publications.id as "publicationId", links.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
+async function getUserPublications(userId, lastId) {
+    const parameters = lastId === 0 ? [userId] : [userId, lastId];
+    const q = `SELECT publications.id as "publicationId", links.id, publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", 
     users."userName", users.image as profile, links.* 
     FROM publications
     LEFT JOIN likes
@@ -14,14 +15,16 @@ async function getUserPublications(id){
     ON hash_link."publicationId" = publications.id
     LEFT JOIN hashtags as hash
     ON hash.id = hash_link."hashtagId"
-    WHERE publications."idUser" = $1
+    WHERE publications."idUser" = $1 ${lastId === 0 ? '' : `AND publications.id < $2`}
     GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id
-    ORDER BY publications."createdAt" DESC LIMIT 20
-    `,[id])
+    ORDER BY publications."createdAt" DESC LIMIT 10
+    `
+    console.log(q);
+    return await db.query(q, parameters);
 }
 
 const userRepository = {
-    getUserPublications    
+    getUserPublications
 }
 
 export default userRepository;
