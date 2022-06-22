@@ -35,11 +35,13 @@ async function deleteFollower(userId,followerId){
     `,[userId,followerId])
 }
 
+
+
 const userRepository = {
     getUserPublications,
     getUserFollower,
     postUserFollower,
-    deleteFollower   
+    deleteFollower,
 }
 
 export default userRepository;

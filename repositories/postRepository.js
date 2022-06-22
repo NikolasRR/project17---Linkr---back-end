@@ -74,6 +74,22 @@ async function deleteExistingPostHashtags (postId) {
     `, [postId])
 }
 
+async function getUserFollowersPosts(userId){
+    return await db.query(`SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
+    FROM publications
+    LEFT JOIN likes
+    ON publications.id = likes."publicationId"
+    JOIN users 
+    ON publications."idUser" = users.id
+    JOIN links
+    ON links.id = publications."linkId"
+    JOIN followers
+    ON followers."userId" = $1
+    GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id,users.id
+    ORDER BY publications."createdAt" DESC LIMIT 20
+    `,[userId])
+}
+
 const postsRepository = {
     verifyUser,
     postLink,
@@ -86,7 +102,8 @@ const postsRepository = {
     getHashtag,
     postHashtag,
     postPublicationHashtag,
-    addCountHashtag
+    addCountHashtag,
+    getUserFollowersPosts
 }
 
 export default postsRepository;

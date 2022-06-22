@@ -109,3 +109,14 @@ export async function editPost(req, res) {
         res.sendStatus(500);
     }
 }
+
+export async function getFollowersPosts(req,res){
+    const userId = res.locals.user.id
+    try{
+    const {rows} = await postsRepository.getUserFollowersPosts(userId);
+    res.status(200).send(rows)
+    }catch(e){
+        console.error(e)
+        res.sendStatus(500)
+    }
+}
