@@ -73,12 +73,12 @@ async function deleteExistingPostHashtags (postId) {
     `, [postId])
 }
 
-async function newPosts (lastPostTimestamp) {
+async function newPosts (lastPostId) {
     return db.query(`
         SELECT * FROM publications
-        WHERE "createdAt" > $1
+        WHERE id > $1
         ORDER BY "createdAt" DESC
-    `, [lastPostTimestamp])
+    `, [lastPostId])
 }
 
 const postsRepository = {

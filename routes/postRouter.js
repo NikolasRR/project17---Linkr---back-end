@@ -7,7 +7,7 @@ const postRouter = express.Router();
 
 
 postRouter.get("/timeline",tokenValidation, getPublications);
-postRouter.post("/newposts", tokenValidation, newPostsVerifier);
+postRouter.get("/newposts", tokenValidation, newPostsVerifier);
 postRouter.post("/timeline",tokenValidation, publicationValidator, postPublication);
 postRouter.delete("/post", tokenValidation, postDeletionValidator, deletePost);
 postRouter.put("/post", tokenValidation, editPost);

@@ -111,9 +111,10 @@ export async function editPost(req, res) {
 }
 
 export async function newPostsVerifier (req, res) {
-    const lastPostTimestamp = dayjs(req.body.createdAt).format('YYYY-MM-DD HH:mm:ss');
+    const {lastPostId} = req.query;
+
     try {
-        const { rows } = await postsRepository.newPosts(`${lastPostTimestamp}.999999`);
+        const { rows } = await postsRepository.newPosts(parseInt(lastPostId));
         
         if (rows.length > 0) {
             return res.send({ amount: rows.length }).status(200);
