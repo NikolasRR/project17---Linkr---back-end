@@ -54,10 +54,11 @@ export async function postPublication(req, res) {
 }
 
 export async function getPublications(req, res) {
+    const { lastId } = req.query;   
 
     try {
-        const { rows } = await postsRepository.getPublications();
-        res.status(200).send(rows)
+        const { rows } = await postsRepository.getPublications(parseInt(lastId));
+        res.status(200).send(rows);
 
     } catch (e) {
         console.error(e)
@@ -111,10 +112,12 @@ export async function editPost(req, res) {
 }
 
 export async function newPostsVerifier (req, res) {
+    console.log(req.body.createdAt);
     const lastPostTimestamp = dayjs(req.body.createdAt).format('YYYY-MM-DD HH:mm:ss');
+    // const lastPostTimestamp = req.body.createdAt;
     try {
         const { rows } = await postsRepository.newPosts(`${lastPostTimestamp}.999999`);
-        
+        console.log(rows);
         if (rows.length > 0) {
             return res.send({ amount: rows.length }).status(200);
         }

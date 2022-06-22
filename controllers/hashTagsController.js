@@ -12,9 +12,10 @@ export async function getTrending(req, res) {
 
 export async function getPostsByHashTag(req, res) {
     const { hashtag } = req.params;
+    const { lastId } = req.query;
 
     try {
-        const { rows } = await hashTagsRepository.getPublicationsByHashTag(req.params.hashtag);
+        const { rows } = await hashTagsRepository.getPublicationsByHashTag(hashtag, parseInt(lastId));
         res.status(200).send(rows);
 
     } catch (err) {
