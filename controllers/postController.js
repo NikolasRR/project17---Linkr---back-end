@@ -58,6 +58,7 @@ export async function getPublications(req, res) {
 
     try {
         const { rows } = await postsRepository.getPublications(parseInt(lastId));
+        console.log(rows);
         res.status(200).send(rows);
 
     } catch (e) {
@@ -85,7 +86,6 @@ export async function editPost(req, res) {
 
     try {
         await postsRepository.editPostContent(postId, text);
-        console.log('teste');
         await postsRepository.deleteExistingPostHashtags(postId);
 
         if (hashtags.length > 0) {
@@ -102,7 +102,6 @@ export async function editPost(req, res) {
                 }
             })
         }
-        console.log('algo');
         return res.sendStatus(200);
 
     } catch (error) {
@@ -112,12 +111,11 @@ export async function editPost(req, res) {
 }
 
 export async function newPostsVerifier (req, res) {
-    console.log(req.body.createdAt);
-    const lastPostTimestamp = dayjs(req.body.createdAt).format('YYYY-MM-DD HH:mm:ss');
-    // const lastPostTimestamp = req.body.createdAt;
+    const {lastPostId} = req.query;
+
     try {
-        const { rows } = await postsRepository.newPosts(`${lastPostTimestamp}.999999`);
-        console.log(rows);
+        const { rows } = await postsRepository.newPosts(parseInt(lastPostId));
+        
         if (rows.length > 0) {
             return res.send({ amount: rows.length }).status(200);
         }

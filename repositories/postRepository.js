@@ -15,6 +15,7 @@ async function postPublication(id, text, url, linkId) {
 }
 
 async function getPublications(lastId) {
+    const parameters = lastId === 0 ? null : [lastId]
     return await db.query(`
         SELECT users.id as "userId", publications."createdAt" as timestamp, publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
         FROM publications
@@ -24,10 +25,10 @@ async function getPublications(lastId) {
         ON publications."idUser" = users.id
         JOIN links
         ON links.id = publications."linkId"
-        ${lastId === 0 ? '' : `WHERE publications.id < ${lastId}`}
+        ${lastId === 0 ? '' : `WHERE publications.id < $1`}
         GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id,users.id
         ORDER BY publications."createdAt" DESC LIMIT 10
-    `)
+    `, parameters)
 }
 
 async function getPublication(postId, userId) {
@@ -74,11 +75,12 @@ async function deleteExistingPostHashtags(postId) {
     `, [postId])
 }
 
-async function newPosts(lastPostTimestamp) {
+async function newPosts (lastPostId) {
     return db.query(`
         SELECT * FROM publications
-        WHERE "createdAt" > $1
-    `, [lastPostTimestamp])
+        WHERE id > $1
+        ORDER BY "createdAt" DESC
+    `, [lastPostId])
 }
 
 const postsRepository = {
