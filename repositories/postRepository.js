@@ -73,6 +73,10 @@ async function deleteExistingPostHashtags (postId) {
     `, [postId])
 }
 
+async function getUserFollowers(userId){
+    return await db.query(`SELECT followers."followerId" FROM followers WHERE "userId" = $1`,[userId])
+}
+
 async function newPosts (lastPostId) {
     return db.query(`
         SELECT * FROM publications
@@ -94,7 +98,9 @@ const postsRepository = {
     postHashtag,
     postPublicationHashtag,
     addCountHashtag,
-    newPosts
+    newPosts,
+    getUserFollowers
+    
 }
 
 export default postsRepository;
