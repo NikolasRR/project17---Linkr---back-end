@@ -23,8 +23,32 @@ async function getUserPublications(userId, lastId) {
     return await db.query(q, parameters);
 }
 
+async function getUserFollower(userId,followerId){
+    return await db.query(`SELECT * FROM followers WHERE "userId"=$1 AND "followerId"=$2
+    `,[userId,followerId])
+}
+
+async function postUserFollower(userId,followerId){
+    return await db.query(`INSERT INTO followers ("userId", "followerId") VALUES ($1,$2)
+    `,[userId,followerId])
+}
+
+async function deleteFollower(userId,followerId){
+    return await db.query(`DELETE FROM followers WHERE "userId"=$1 AND "followerId"=$2
+    `,[userId,followerId])
+}
+
+
+
 const userRepository = {
+<<<<<<< HEAD
     getUserPublications
+=======
+    getUserPublications,
+    getUserFollower,
+    postUserFollower,
+    deleteFollower,
+>>>>>>> develop
 }
 
 export default userRepository;
