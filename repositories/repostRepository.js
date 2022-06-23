@@ -94,7 +94,5 @@ const repostRepository = {
     setRepost,
     getUserPublications,
     getUserReposts
-}
-,
-    
+}  
 export default repostRepository
