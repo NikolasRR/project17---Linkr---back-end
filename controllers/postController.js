@@ -1,6 +1,7 @@
 import postsRepository from "../repositories/postRepository.js"
 import urlMetadata from "url-metadata"
 import findHashtags from "find-hashtags";
+import dayjs from "dayjs";
 
 export async function postPublication(req, res) {
     try {
@@ -56,7 +57,6 @@ export async function getPublications(req, res) {
 
     try {
         const { rows } = await postsRepository.getPublications();
-
         res.status(200).send(rows)
 
     } catch (e) {
@@ -104,6 +104,23 @@ export async function editPost(req, res) {
         console.log('algo');
         return res.sendStatus(200);
 
+    } catch (error) {
+        console.log(error);
+        res.sendStatus(500);
+    }
+}
+
+export async function newPostsVerifier (req, res) {
+    const {lastPostId} = req.query;
+
+    try {
+        const { rows } = await postsRepository.newPosts(parseInt(lastPostId));
+        
+        if (rows.length > 0) {
+            return res.send({ amount: rows.length }).status(200);
+        }
+
+        res.sendStatus(204);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
