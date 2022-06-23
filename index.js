@@ -10,6 +10,7 @@ import hashTagsRouter from "./routes/hashTagsRouter.js"
 import likesRouter from "./routes/likesRoutes.js"
 import userRouter from "./routes/userRouter.js"
 import searchRouter from "./routes/searchRoutes.js"
+import commeentsRouter from "./routes/commentsRouter.js"
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(postRouter);
 app.use(likesRouter);
 app.use(userRouter);
 app.use(searchRouter);
+app.use(commeentsRouter);
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
