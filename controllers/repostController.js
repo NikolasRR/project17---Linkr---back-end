@@ -21,3 +21,13 @@ export async function getRepublications(req, res) {
         res.sendStatus(500)
     }
 }
+
+export async function postResposts(req, res){
+    const{userId, postId} = req.body
+    try {
+        await repostRepository.setRepost(userId, postId)
+        res.sendStatus(201);
+    } catch (error) {
+        res.sed(error).status(500);
+    }
+}

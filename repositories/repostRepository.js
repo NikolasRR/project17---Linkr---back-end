@@ -41,9 +41,16 @@ async function getReposts(userId){
                 ORDER BY  repost."createdAt" DESC`,[userId])
 }
 
+async function setRepost(userId, postId){
+    return await db.query(
+        `INSERT INTO repost ("userId", "publicationId") VALUES ($1,$2)`,[userId, postId]
+    );
+}
+
 const repostRepository = {
     getPublications,
-    getReposts
+    getReposts,
+    setRepost
 }
 
 export default repostRepository
