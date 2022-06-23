@@ -7,11 +7,15 @@ import {getRepublications, postResposts} from "./../controllers/repostController
 const postRouter = express.Router();
 
 
-postRouter.get("/timeline",tokenValidation, getPublications);
+// postRouter.get("/timeline",tokenValidation, getPublications);
 postRouter.get("/newposts", tokenValidation, newPostsVerifier);
-postRouter.post("/timeline",tokenValidation, publicationValidator, postPublication);
-postRouter.delete("/post", tokenValidation, postDeletionValidator, deletePost);
-postRouter.put("/post", tokenValidation, editPost);
 postRouter.get("/reposts/:id",tokenValidation, getRepublications)
 postRouter.post("/reposts", tokenValidation, postResposts)
+postRouter.post("/timeline",tokenValidation, publicationValidator, postPublication);
+//postRouter.get("/timeline",tokenValidation, getPublications);
+postRouter.get("/timeline",tokenValidation, getRepublications)
+postRouter.delete("/post", tokenValidation, postDeletionValidator, deletePost);
+postRouter.put("/post", tokenValidation, editPost);
+// postRouter.get("/reposts/:id", getRepublications)
+
 export default postRouter;
