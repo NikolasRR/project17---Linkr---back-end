@@ -49,7 +49,7 @@ async function setRepost(userId, postId){
 
 async function getPublications() {
     return await db.query(
-        `SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, 
+        `SELECT publications."createdAt" as timestamp, users.id as "userId", publications.id as "publicationId", publications.content, publications.url, 
         COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* ,
         (SELECT COALESCE(COUNT("publicationId"), 0) from repost where "publicationId" = publications.id) as resposts
         FROM publications 
@@ -69,7 +69,7 @@ async function getReposts(){
         `SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, 
         COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, 
         links.id, links.title, links.description, links.image, links.link,
-        (SELECT COALESCE(COUNT("publicationId"), 0) from repost where "publicationId" = publications.id) as resposts, repost."createdAt", repost."userId" as "repostId",u2.id as "localId" , u2."userName" as "repostedBy"
+        (SELECT COALESCE(COUNT("publicationId"), 0) from repost where "publicationId" = publications.id) as resposts, repost."createdAt" as timestamp, repost."userId" as "repostId",u2.id as "localId" , u2."userName" as "repostedBy"
         FROM publications 
         JOIN repost
         ON publications.id = repost."publicationId"
