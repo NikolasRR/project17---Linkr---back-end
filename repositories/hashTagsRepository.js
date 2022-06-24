@@ -11,7 +11,7 @@ async function getTrending() {
         `)
 }
 
-async function getPublicationsByHashTag(hashTag, lastId) {
+async function getPublicationsByHashTag(hashTag, start) {
     return db.query(`
         SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, COUNT(likes."publicationId") as "totalLikes", users."userName", users.image as profile, links.* 
         FROM publications
@@ -25,10 +25,10 @@ async function getPublicationsByHashTag(hashTag, lastId) {
         ON hash_link."publicationId" = publications.id
         JOIN hashtags as hash
         ON hash.id = hash_link."hashtagId"
-        WHERE hash.content = $1 ${lastId === 0 ? '' : `AND publications.id < ${lastId}`}
+        WHERE hash.content = $1
         GROUP BY publications.id,users."userName", users.image,likes."publicationId",links.id, users.id
-        ORDER BY publications."createdAt" DESC LIMIT 3
-    `, [hashTag])
+        ORDER BY publications."createdAt" DESC LIMIT 10 OFFSET $2
+    `, [hashTag, start]);
 }
 
 const hashTagsRepository = {

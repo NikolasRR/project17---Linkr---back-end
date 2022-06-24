@@ -4,14 +4,10 @@ import {getUserPublications , getFollowing, postFollower, deleteFollower, getUse
 
 const userRouter = express.Router();
 
-<<<<<<< HEAD
-userRouter.get("/user/:id", tokenValidation, getUserPublications )
-=======
 // userRouter.get("/user/:id",tokenValidation, getUserPublications )
 userRouter.get("/user/:id",tokenValidation, getUserPublicationsAndRepublications )
 userRouter.get("/user/get-follow/:id",tokenValidation, getFollowing )
 userRouter.post("/user/follow/:id",tokenValidation, postFollower )
 userRouter.delete("/user/unfollow/:id",tokenValidation, deleteFollower )
->>>>>>> develop
 
 export default userRouter;

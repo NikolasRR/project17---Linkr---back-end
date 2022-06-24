@@ -1,5 +1,6 @@
-import postsRepository from "../repositories/postRepository.js"
-import urlMetadata from "url-metadata"
+import repostRepository from "../repositories/repostRepository.js";
+import postsRepository from "../repositories/postRepository.js";
+import urlMetadata from "url-metadata";
 import findHashtags from "find-hashtags";
 import dayjs from "dayjs";
 
@@ -111,16 +112,44 @@ export async function editPost(req, res) {
 }
 
 export async function newPostsVerifier (req, res) {
-    const {lastPostId} = req.query;
+    const userId = res.locals.user.id;
+    const lastPostTS = req.query.timestamp
 
     try {
-        const { rows } = await postsRepository.newPosts(parseInt(lastPostId));
-        
-        if (rows.length > 0) {
-            return res.send({ amount: rows.length }).status(200);
+        const { rows: followers } = await postsRepository.getUserFollowers(userId)
+        if (followers.length === 0) {
+            return res.status(204).send([]);
         }
 
-        res.sendStatus(204);
+        const { rows: posts } = await repostRepository.getPublications();
+
+        const { rows: reposts } = await repostRepository.getReposts();
+
+        for (let i in reposts) {
+            reposts[i] = { ...reposts[i], "isRepost": true }
+        }
+        const allPosts = posts.concat(reposts);
+        allPosts.sort((a, b) => {
+            return b.createdAt - a.createdAt;
+        });
+
+        let followersPosts = []
+
+        for (let post of allPosts) {
+            for (let follower of followers) {
+                if (post.userId === follower.followerId || post.repostId === follower.followerId) {
+                    followersPosts.push(post)
+                }
+            }
+        }
+
+        const newPosts = followersPosts.filter(post => dayjs(post.timestamp).isAfter(lastPostTS));
+
+        if (newPosts.length === 0) {
+            return res.sendStatus(204);
+        }
+
+        res.send(newPosts).status(200);
     } catch (error) {
         console.log(error);
         res.sendStatus(500);
