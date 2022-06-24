@@ -73,7 +73,7 @@ export async function getUserPublicationsAndRepublications(req, res) {
         });
 
         const filteredPosts = allPosts.splice(start, 10);
-        console.log(allPosts);
+        
         res.status(200).send(filteredPosts);
 
     } catch (e) {
