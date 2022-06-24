@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
+app.use(cors({ credentials: true, origin: ["http://localhost:3000", "https://project17-linkedir-front-jkbk9md0o-nikolasrr.vercel.app"] }));
 app.use(json());
 
 app.use(hashTagsRouter);
