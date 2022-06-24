@@ -47,7 +47,6 @@ async function setRepost(userId, postId){
     );
 }
 
-
 async function getPublications() {
     return await db.query(
         `SELECT users.id as "userId", publications.id as "publicationId", publications.content, publications.url, 
