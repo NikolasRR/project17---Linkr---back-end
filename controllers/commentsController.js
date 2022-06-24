@@ -22,10 +22,27 @@ async function postComment(req, res) {
 
 async function getComments(req, res) {
     const { id } = req.params;
+    const  userId  = res.locals.user.id
 
     try {
-        const comments = await commentsRepository.getComments(id)
-        return res.status(200).send(comments.rows)
+        // const comments = await commentsRepository.getComments(id)
+        // return res.status(200).send(comments.rows)
+        const {rows: comments} = await commentsRepository.getComments(id)
+        const {rows: followers} = await commentsRepository.isFollowing(userId);
+
+        const arr =[];
+        const result = [];
+        for(let i of followers){
+            arr.push(i.followerId);
+        }
+        for(let i of comments){
+            if(arr.includes(i.commentUserId)){
+                i={...i, follower: true}
+            }
+            result.push(i)
+        }
+        console.log("resultado", result);
+        return res.status(200).send(result);
 
     } catch (e) {
         console.log(e);
@@ -52,17 +69,17 @@ async function countComments(req, res) {
     }
 }
 
-async function isFollowing(req, res) {
-    const { id } = req.params;
+// async function isFollowing(req, res) {
+//     const { id } = req.params;
 
-    try {
-        const followers = await commentsRepository.isFollowing(id);
-        return res.status(200).send(followers.rows[0]);
+//     try {
+//         const followers = await commentsRepository.isFollowing(id);
+//         return res.status(200).send(followers.rows);
     
-    } catch (e) {
-        console.log(e);
-        return res.status(422).send("Não possível enviar os dados!")
-    }
-}
+//     } catch (e) {
+//         console.log(e);
+//         return res.status(422).send("Não possível enviar os dados!")
+//     }
+// }
 
-export { postComment, getComments, countComments, isFollowing };
+export { postComment, getComments, countComments };
