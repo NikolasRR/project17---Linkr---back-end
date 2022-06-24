@@ -25,24 +25,26 @@ export async function getPostsByHashTag(req, res) {
     }
 }
 
-export async function getPublicationsAndRepublicationsByHasgTag (req,res){
-
+export async function getPublicationsAndRepublicationsByHasgTag(req, res) {
     const { hashtag } = req.params;
-    
+    const start = parseInt(req.query.start);
+
     try {
         const { rows: posts } = await hashTagsRepository.getHashtagPublications(hashtag);
-        const { rows: reposts} = await hashTagsRepository.getHashtagReposts(hashtag);
-        
-        for(let i in reposts){
-            reposts[i]={...reposts[i], "isRepost":true}
+        const { rows: reposts } = await hashTagsRepository.getHashtagReposts(hashtag);
+
+        for (let i in reposts) {
+            reposts[i] = { ...reposts[i], "isRepost": true }
         }
 
         const allPosts = posts.concat(reposts);
-        allPosts.sort((a, b)=> {
+        allPosts.sort((a, b) => {
             return b.createdAt - a.createdAt;
-        });      
-       
-        res.status(200).json({ "data": allPosts, "message":"OK"})
+        });
+        
+        const filteredPosts = allPosts.splice(start, 10);
+
+        res.status(200).send(filteredPosts);
 
     } catch (e) {
         console.error(e)

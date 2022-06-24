@@ -4,20 +4,14 @@ import postsRepository from "../repositories/postRepository.js";
 export async function getRepublications(req, res) {
     const userId = res.locals.user.id;
     const start = parseInt(req.query.start);
-    console.log("oi");
 
     try {
-        // const { rows: posts } = await repostRepository.getPublications(id);
-        // const { rows: reposts} = await repostRepository.getReposts(id);
-        console.log("oi2");
         const { rows: followers } = await postsRepository.getUserFollowers(userId)
         if (followers.length === 0) {
-            console.log('oi4');
             return res.status(204).send([]);
         }
 
         const { rows: posts } = await repostRepository.getPublications();
-        console.log("oi3");
         const { rows: reposts } = await repostRepository.getReposts();
 
         for (let i in reposts) {
@@ -39,7 +33,7 @@ export async function getRepublications(req, res) {
         }
 
         const filteredPosts = followersPosts.splice(start, 10);
-        console.log(followersPosts);
+
         res.status(200).send(filteredPosts);
 
     } catch (e) {
