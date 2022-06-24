@@ -45,7 +45,6 @@ async function countLikes(req, res) {
         if (likesInfo.rows.length == 0){
             return res.status(200).send(`${likesInfo.rows.length}`)
         } else {
-            console.log(likesInfo.rows[0].count)
             return res.status(200).send(likesInfo.rows[0].count);
         }
     

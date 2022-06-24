@@ -27,8 +27,9 @@ async function countComments(id) {
 
 async function isFollowing(id) {
     return db.query(`
-        SELECT * from followers
-        WHERE followers."followerId" = $1`,
+        SELECT followers."followerId"
+        FROM followers
+        WHERE followers."userId" = $1`,
         [id]);
 }
 

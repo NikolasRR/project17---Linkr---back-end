@@ -57,7 +57,7 @@ async function isFollowing(req, res) {
 
     try {
         const followers = await commentsRepository.isFollowing(id);
-        return res.status(200).send(followers.rows)
+        return res.status(200).send(followers.rows[0]);
     
     } catch (e) {
         console.log(e);
